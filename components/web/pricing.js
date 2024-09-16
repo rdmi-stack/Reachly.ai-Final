@@ -42,11 +42,9 @@ const PricingSection = () => {
             <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
           </label>
           <span className="ml-3 text-gray-600">Billed Yearly</span>
-          {isYearly && (
-            <span className="ml-2 bg-red-500 text-white text-xs font-bold py-1 px-2 rounded-full">
-              20% OFF
-            </span>
-          )}
+          <span className="ml-2 bg-red-500 text-white text-xs font-bold py-1 px-2 rounded-full">
+            20% OFF
+          </span>
         </div>
 
         <div className="grid gap-8 md:grid-cols-3">
@@ -65,11 +63,10 @@ const PricingSection = () => {
               <li className="text-gray-600">Limited AI chat usage</li>
               <li className="text-gray-600">Email support</li>
             </ul>
-            <Link
-              href="/signup"
-              className="mt-auto inline-block bg-black text-white py-3 px-6 text-lg font-medium hover:bg-gray-800 transition duration-300"
-            >
-              Get Started - It's Free
+            <Link href="/signup" className="mt-auto">
+              <button className="w-full bg-black text-white py-3 px-6 text-lg font-medium hover:bg-gray-800 transition duration-300">
+                Get Started - It's Free
+              </button>
             </Link>
           </div>
 
@@ -91,11 +88,10 @@ const PricingSection = () => {
               <li className="text-gray-600">Priority support</li>
               <li className="text-gray-600">More AI chat usage</li>
             </ul>
-            <Link
-              href="/signup"
-              className="mt-auto inline-block bg-black text-white py-3 px-6 text-lg font-medium hover:bg-gray-800 transition duration-300"
-            >
-              Start Your Free Trial
+            <Link href="/signup" className="mt-auto">
+              <button className="w-full bg-black text-white py-3 px-6 text-lg font-medium hover:bg-gray-800 transition duration-300">
+                Start Your Free Trial
+              </button>
             </Link>
           </div>
 
@@ -126,11 +122,10 @@ const PricingSection = () => {
               <li className="text-gray-600">Unlimited AI chat access</li>
               <li className="text-gray-600">24/7 premium support</li>
             </ul>
-            <Link
-              href="/signup"
-              className="mt-auto inline-block bg-black text-white py-3 px-6 text-lg font-medium hover:bg-gray-800 transition duration-300"
-            >
-              Start Your Free Trial
+            <Link href="/signup" className="mt-auto">
+              <button className="w-full bg-black text-white py-3 px-6 text-lg font-medium hover:bg-gray-800 transition duration-300">
+                Start Your Free Trial
+              </button>
             </Link>
           </div>
         </div>

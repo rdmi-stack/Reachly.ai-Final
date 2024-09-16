@@ -1,8 +1,6 @@
 // pages/index.js
 import Head from "next/head";
-import { useRouter } from "next/router";
-import React, { useEffect } from "react";
-
+import React from "react";
 // Import components
 import NavigationBar from "../components/web/NavigationBar";
 import Hero from "../components/web/hero";
@@ -11,12 +9,6 @@ import Footer from "../components/web/Footer";
 import Pricing from "../components/web/pricing";
 
 export default function Home() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.push("/browse");
-  }, []);
-
   return (
     <>
       <Head>

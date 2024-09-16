@@ -3,16 +3,6 @@ const { withSentryConfig } = require("@sentry/nextjs");
 // Configuration for your Next.js application
 const moduleExports = {
   reactStrictMode: true,
-  // Remove the redirects function
-  // async redirects() {
-  //   return [
-  //     {
-  //       source: '/',
-  //       destination: '/login',
-  //       permanent: true, // or false if the redirect is temporary
-  //     },
-  //   ];
-  // },
   // Other Next.js configurations can be added here if needed
 };
 
@@ -35,4 +25,8 @@ const sentryNextJsOptions = {
 };
 
 // Export the configuration with Sentry integration
-module.exports = withSentryConfig(moduleExports, sentryWebpackPluginOptions, sentryNextJsOptions);
+module.exports = withSentryConfig(
+  moduleExports,
+  sentryWebpackPluginOptions,
+  sentryNextJsOptions,
+);

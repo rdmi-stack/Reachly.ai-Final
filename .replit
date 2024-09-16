@@ -1,11 +1,9 @@
-entrypoint = "pages/index.js"
-
 run = "npm run dev"
 hidden = [".config", "package-lock.json"]
-modules = ["nodejs-18:v3-20230608-f4cd419"]
+modules = ["nodejs-20", "web", "nix"]
 
 [nix]
-channel = "stable-21_11"
+channel = "stable-24_05"
 
 [env]
 XDG_CONFIG_HOME = "/home/runner/.config"
@@ -68,6 +66,10 @@ support = true
       type = "pwa-node"
 
 [deployment]
-run = ["node", "index.js"]
+run = ["sh", "-c", "npm run dev"]
 deploymentTarget = "cloudrun"
 ignorePorts = false
+
+[[ports]]
+localPort = 3000
+externalPort = 80

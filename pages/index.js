@@ -1,28 +1,38 @@
-
+// pages/index.js
 import Head from "next/head";
 import { useRouter } from "next/router";
-import withAuth from "../hoc/withAuth";
-import React, {useEffect } from 'react';
+import React, { useEffect } from "react";
 
+// Import components
+import NavigationBar from "../components/web/NavigationBar";
+import Hero from "../components/web/hero";
+import FeatureSection1 from "../components/web/FeatureSection1";
+import Footer from "../components/web/Footer";
+import Pricing from "../components/web/pricing";
 
-function Home() {
+export default function Home() {
   const router = useRouter();
+
   useEffect(() => {
-      router.push('/browse');
+    router.push("/browse");
   }, []);
+
   return (
     <>
       <Head>
-        <title>
-          AI-Driven Email Personalization Platform - Boost Engagement & Sales
-        </title>
+        <title>AnyCopy: AI Copy Assistant Powered by Generative AI</title>
         <meta
           name="description"
-          content="Experience the future of email marketing with our AI-powered personalization platform. Elevate your outreach with tailored content, increase engagement rates, and drive sales effectively. Perfect for businesses seeking to harness the power of AI for smarter email strategies."
+          content="Experience a 10x boost in content creation efficiency and quality. Our Generative AI platform revolutionizes how you produce content, delivering engaging, precise copy at an unprecedented scale."
         />
       </Head>
-    
+      <div>
+        <NavigationBar />
+        <Hero />
+        <FeatureSection1 />
+        <Pricing />
+        <Footer />
+      </div>
     </>
   );
 }
-export default withAuth(Home);

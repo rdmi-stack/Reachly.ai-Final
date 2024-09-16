@@ -13,7 +13,6 @@ import { auth } from "../utils/firebase";
 import { useRouter } from "next/router";
 import axios from "axios";
 
-
 function Login() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [isLoggingInWithGoogle, setIsLoggingInWithGoogle] = useState(false);
@@ -25,7 +24,6 @@ function Login() {
       .min(8, "Password must be at least 8 characters")
       .required("Password is required"),
   });
-
 
   const defaultValues = {
     email: "",
@@ -272,7 +270,7 @@ function Login() {
                           id="remember-me"
                           name="remember-me"
                           type="checkbox"
-                        // class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                          // class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
                         />
                       </div>
                       <div class="ms-3">

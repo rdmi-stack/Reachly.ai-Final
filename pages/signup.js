@@ -19,6 +19,7 @@ function Signup() {
   const [isSigningUpWithGoogle, setIsSigningUpWithGoogle] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
+
   const registerSchema = Yup.object().shape({
     email: Yup.string().email().required("Email is required"),
     password: Yup.string()
@@ -27,14 +28,14 @@ function Signup() {
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("password"), null], "Passwords must match")
       .required("Confirm Password is required"),
-    plan: Yup.string().required("Please select a pla"),
+    plan: Yup.string().required("Please select a plan"),
   });
 
   const defaultValues = {
     email: "",
     password: "",
     confirmPassword: "",
-    plan: "", // default plan not selected
+    plan: "",
   };
 
   const methods = useForm({
@@ -60,8 +61,9 @@ function Signup() {
       });
     }
   }, [errors]);
+
   const onSubmit = async (data) => {
-    setIsSigningUp(true); // Activate the loading state before starting the process
+    setIsSigningUp(true);
     try {
       const addNewUser = await axios.post(
         "http://localhost:4000/api/signup",
@@ -72,12 +74,12 @@ function Signup() {
         enqueueSnackbar("Registration failed, please try again.", {
           variant: "error",
         });
-        setIsSigningUp(false); // Deactivate loading state on failure to add new user
+        setIsSigningUp(false);
         return;
       }
       createUserWithEmailAndPassword(auth, data.email, data.password)
         .then((userCredential) => {
-          reset(); // Reset the form fields
+          reset();
           localStorage.setItem("accessToken", userCredential.user.accessToken);
           saveUser(userCredential.user.uid, {
             email: userCredential.user.email,
@@ -95,7 +97,7 @@ function Signup() {
           });
         })
         .finally(() => {
-          setIsSigningUp(false); // Deactivate loading state regardless of the outcome
+          setIsSigningUp(false);
         });
     } catch (error) {
       console.error("Error during registration process:", error);
@@ -103,279 +105,205 @@ function Signup() {
         "Failed to register. Please check your network and try again.",
         { variant: "error" },
       );
-      setIsSigningUp(false); // Deactivate loading state on axios error
+      setIsSigningUp(false);
     }
   };
 
   const signinWithGoogle = async () => {
-    setIsSigningUpWithGoogle(true); // Activate the loading state
+    setIsSigningUpWithGoogle(true);
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
-        localStorage.setItem("accessToken", token); // Store the token in local storage
-        enqueueSnackbar("Login successfully!", { variant: "success" }); // Show success message
-        router.push("/onboard"); // Redirect user after successful login
+        localStorage.setItem("accessToken", token);
+        enqueueSnackbar("Login successfully!", { variant: "success" });
+        router.push("/onboard");
       })
       .catch((error) => {
-        console.error("Failed to sign in with Google:", error); // Log the error for debugging
+        console.error("Failed to sign in with Google:", error);
         enqueueSnackbar(`${error?.code}: ${error?.message}`, {
           variant: "error",
-        }); // Show error to user
+        });
       })
       .finally(() => {
-        setIsSigningUpWithGoogle(false); // Deactivate the loading state regardless of the outcome
+        setIsSigningUpWithGoogle(false);
       });
   };
 
   return (
-    <>
-      <div class=" dark:bg-slate-900 bg-gray-100 flex min-h-screen py-10 ">
-        <main class="w-full max-w-md mx-auto">
-          <div className="text-center">
-            <a
-              href="https://anycopy.co"
-              target="_blank"
-              rel="noopener noreferrer"
+    <section className="grid grid-cols-1 lg:grid-cols-2">
+      <div className="w-full px-4 py-20 mx-auto bg-white xl:py-32 md:w-3/5 lg:w-4/5 xl:w-3/5">
+        <h1 className="mb-4 -mt-3 text-2xl font-extrabold leading-snug tracking-tight text-left text-gray-900 md:text-4xl">
+          Sign up to our product today for free
+        </h1>
+        <div className="mt-8 space-y-10">
+          <div className="grid grid-cols-2 gap-4">
+            <button
+              onClick={signinWithGoogle}
+              disabled={isSigningUpWithGoogle}
+              className="py-3 btn btn-icon btn-google"
             >
-              <img
-                src="../images/logo.png"
-                style={{ maxHeight: 70, maxWidth: 70, marginBottom: "20px" }}
-                className="mx-auto"
-                alt="Logo"
-              />
-            </a>
+              {isSigningUpWithGoogle ? (
+                <>
+                  <div className="premium-spinner"></div>
+                  Signing up with Google...
+                </>
+              ) : (
+                <>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="mr-1"
+                  >
+                    <path d="M20.283,10.356h-8.327v3.451h4.792c-0.446,2.193-2.313,3.453-4.792,3.453c-2.923,0-5.279-2.356-5.279-5.28	c0-2.923,2.356-5.279,5.279-5.279c1.259,0,2.397,0.447,3.29,1.178l2.6-2.599c-1.584-1.381-3.615-2.233-5.89-2.233	c-4.954,0-8.934,3.979-8.934,8.934c0,4.955,3.979,8.934,8.934,8.934c4.467,0,8.529-3.249,8.529-8.934	C20.485,11.453,20.404,10.884,20.283,10.356z" />
+                  </svg>
+                  <span className="sr-only">Continue with</span> Google
+                </>
+              )}
+            </button>
+            <button className="py-3 btn btn-icon btn-dark">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="mr-1"
+              >
+                <path d="M19.665,16.811c-0.287,0.664-0.627,1.275-1.021,1.837c-0.537,0.767-0.978,1.297-1.316,1.592	c-0.525,0.482-1.089,0.73-1.692,0.744c-0.432,0-0.954-0.123-1.562-0.373c-0.61-0.249-1.17-0.371-1.683-0.371	c-0.537,0-1.113,0.122-1.73,0.371c-0.616,0.25-1.114,0.381-1.495,0.393c-0.577,0.025-1.154-0.229-1.729-0.764	c-0.367-0.32-0.826-0.87-1.377-1.648c-0.59-0.829-1.075-1.794-1.455-2.891c-0.407-1.187-0.611-2.335-0.611-3.447	c0-1.273,0.275-2.372,0.826-3.292c0.434-0.74,1.01-1.323,1.73-1.751C7.271,6.782,8.051,6.563,8.89,6.549	c0.46,0,1.063,0.142,1.81,0.422s1.227,0.422,1.436,0.422c0.158,0,0.689-0.167,1.593-0.498c0.853-0.307,1.573-0.434,2.163-0.384	c1.6,0.129,2.801,0.759,3.6,1.895c-1.43,0.867-2.137,2.08-2.123,3.637c0.012,1.213,0.453,2.222,1.317,3.023	c0.392,0.372,0.829,0.659,1.315,0.863C19.895,16.236,19.783,16.529,19.665,16.811L19.665,16.811z M15.998,2.38	c0,0.95-0.348,1.838-1.039,2.659c-0.836,0.976-1.846,1.541-2.941,1.452c-0.014-0.114-0.021-0.234-0.021-0.36	c0-0.913,0.396-1.889,1.103-2.688c0.352-0.404,0.8-0.741,1.343-1.009c0.542-0.264,1.054-0.41,1.536-0.435	C15.992,2.127,15.998,2.254,15.998,2.38L15.998,2.38z" />
+              </svg>
+              <span className="sr-only">Continue with</span> Apple
+            </button>
           </div>
-          <div class="mt-2 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
-            <div class="p-4 sm:p-7">
-              <div class="text-center">
-                <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">
-                  Sign up
-                </h1>
-                <p
-                  className="mt-2 text-sm text-gray-600 dark:text-gray-400"
-                  style={{ marginBottom: "10px" }}
-                >
-                  Already have an account?{" "}
-                  <Link href="/login" passHref>
-                    <a className="text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-                      Sign in here
-                    </a>
-                  </Link>
-                </p>
-              </div>
-
-              <div class="mt-1">
-                <button
-                  onClick={signinWithGoogle}
-                  type="button"
-                  disabled={isSigningUpWithGoogle}
-                  className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                >
-                  {isSigningUpWithGoogle ? (
-                    <>
-                      <div className="premium-spinner"></div>
-                      Signing up with Google...
-                    </>
-                  ) : (
-                    <>
-                      <svg
-                        className="w-4 h-auto"
-                        viewBox="0 0 46 47"
-                        fill="none"
-                      >
-                        {/* SVG content */}
-                      </svg>
-                      Sign up with Google
-                    </>
-                  )}
-                </button>
-
-                <div class="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-[1_1_0%] before:border-t before:border-gray-200 before:me-6 after:flex-[1_1_0%] after:border-t after:border-gray-200 after:ms-6 dark:text-gray-500 dark:before:border-gray-600 dark:after:border-gray-600">
-                  Or
-                </div>
-
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <div class="grid gap-y-4">
-                    <div>
-                      <label
-                        for="email"
-                        class="block text-sm mb-2 dark:text-white"
-                      >
-                        Email address
-                      </label>
-                      <div class="relative">
-                        <input
-                          {...register("email")}
-                          type="email"
-                          id="email"
-                          name="email"
-                          class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
-                          aria-describedby="email-error"
-                        />
-                        <div class="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
-                          <svg
-                            class="h-5 w-5 text-red-500"
-                            width="16"
-                            height="16"
-                            fill="currentColor"
-                            viewBox="0 0 16 16"
-                            aria-hidden="true"
-                          >
-                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                          </svg>
-                        </div>
-                      </div>
-                      <p
-                        class="hidden text-xs text-red-600 mt-2"
-                        id="email-error"
-                      >
-                        Please include a valid email address so we can get back
-                        to you
-                      </p>
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="plan"
-                        className="block text-sm mb-2 dark:text-white"
-                      >
-                        Select Plan
-                      </label>
-                      <select
-                        {...register("plan")}
-                        id="plan"
-                        className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400"
-                      >
-                        <option value="">Choose a plan</option>
-                        <option value="free">Free Forever</option>
-                        <option value="monthly_49">$49 Monthly</option>
-                        <option value="monthly_99">$99 Monthly</option>
-                        <option value="yearly_99">{`$480 Yearly`}</option>
-                        <option value="yearly_99">{`$950 Yearly`}</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label
-                        for="password"
-                        class="block text-sm mb-2 dark:text-white"
-                      >
-                        Password
-                      </label>
-                      <div class="relative">
-                        <input
-                          {...register("password")}
-                          type="password"
-                          id="password"
-                          name="password"
-                          class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
-                          aria-describedby="password-error"
-                        />
-                        <div class="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
-                          <svg
-                            class="h-5 w-5 text-red-500"
-                            width="16"
-                            height="16"
-                            fill="currentColor"
-                            viewBox="0 0 16 16"
-                            aria-hidden="true"
-                          >
-                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                          </svg>
-                        </div>
-                      </div>
-                      <p
-                        class="hidden text-xs text-red-600 mt-2"
-                        id="password-error"
-                      >
-                        8+ characters required
-                      </p>
-                    </div>
-
-                    <div>
-                      <label
-                        for="confirm-password"
-                        class="block text-sm mb-2 dark:text-white"
-                      >
-                        Confirm Password
-                      </label>
-                      <div class="relative">
-                        <input
-                          {...register("confirmPassword")}
-                          type="password"
-                          id="confirm-password"
-                          class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
-                          aria-describedby="confirm-password-error"
-                        />
-                        <div class="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
-                          <svg
-                            class="h-5 w-5 text-red-500"
-                            width="16"
-                            height="16"
-                            fill="currentColor"
-                            viewBox="0 0 16 16"
-                            aria-hidden="true"
-                          >
-                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                          </svg>
-                        </div>
-                      </div>
-                      <p
-                        class="hidden text-xs text-red-600 mt-2"
-                        id="confirm-password-error"
-                      >
-                        Password does not match the password
-                      </p>
-                    </div>
-
-                    <div class="flex items-center">
-                      <div class="flex">
-                        <input
-                          id="remember-me"
-                          name="remember-me"
-                          type="checkbox"
-                          required
-                          // class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                        />
-                      </div>
-                      <div class="ms-3">
-                        <label
-                          for="remember-me"
-                          class="text-sm dark:text-white"
-                        >
-                          I accept the
-                          <a
-                            class="text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                            href="https://anycopy.co/terms-of-use"
-                          >
-                            Terms and Conditions
-                          </a>
-                        </label>
-                      </div>
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={isSigningUp}
-                      className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                    >
-                      {isSigningUp ? (
-                        <>
-                          <div className="premium-spinner"></div>
-                          Signing up...
-                        </>
-                      ) : (
-                        "Sign up"
-                      )}
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
+          <div
+            className="text-center border-b border-gray-200"
+            style={{ lineHeight: "0px" }}
+          >
+            <span
+              className="p-2 text-xs font-semibold tracking-wide text-gray-600 uppercase bg-white"
+              style={{ lineHeight: "0px" }}
+            >
+              Or
+            </span>
           </div>
-        </main>
+        </div>
+        <form className="mt-8 space-y-4" onSubmit={handleSubmit(onSubmit)}>
+          <label className="block">
+            <span className="block mb-1 text-xs font-medium text-gray-700">
+              Your Email
+            </span>
+            <input
+              {...register("email")}
+              className="form-input"
+              type="email"
+              placeholder="Ex. james@bond.com"
+              inputMode="email"
+              required
+            />
+          </label>
+          <label className="block">
+            <span className="block mb-1 text-xs font-medium text-gray-700">
+              Your Password
+            </span>
+            <input
+              {...register("password")}
+              className="form-input"
+              type="password"
+              placeholder="••••••••"
+              required
+            />
+          </label>
+          <label className="block">
+            <span className="block mb-1 text-xs font-medium text-gray-700">
+              Confirm Password
+            </span>
+            <input
+              {...register("confirmPassword")}
+              className="form-input"
+              type="password"
+              placeholder="••••••••"
+              required
+            />
+          </label>
+          <label className="block">
+            <span className="block mb-1 text-xs font-medium text-gray-700">
+              Select Plan
+            </span>
+            <select {...register("plan")} className="form-select">
+              <option value="">Choose a plan</option>
+              <option value="free">Free Forever</option>
+              <option value="monthly_49">$49 Monthly</option>
+              <option value="monthly_99">$99 Monthly</option>
+              <option value="yearly_99">{`$480 Yearly`}</option>
+              <option value="yearly_99">{`$950 Yearly`}</option>
+            </select>
+          </label>
+          <button
+            type="submit"
+            disabled={isSigningUp}
+            className="w-full btn btn-primary btn-lg"
+          >
+            {isSigningUp ? (
+              <>
+                <div className="premium-spinner"></div>
+                Signing up...
+              </>
+            ) : (
+              "Register"
+            )}
+          </button>
+        </form>
+        <div className="pt-6 mt-6 text-sm font-medium text-gray-700 border-t border-gray-200">
+          Already have an account?
+          <Link href="/login">
+            <a className="text-purple-700 hover:text-purple-900">Sign in</a>
+          </Link>
+        </div>
       </div>
-    </>
+      <div className="px-4 py-20 space-y-10 bg-gray-100 xl:py-32 md:px-40 lg:px-20 xl:px-40">
+        <a href="/" title="Go to Kutty Home Page">
+          <svg
+            className="w-auto h-6"
+            width="86"
+            height="24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 335 93"
+          >
+            {/* SVG path content */}
+          </svg>
+          <span className="sr-only">Kutty Home Page</span>
+        </a>
+        <div className="flex space-x-3">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            className="flex-none w-6 h-6 mt-1 text-purple-700"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <div>
+            <h2 className="text-xl font-medium text-purple-700">
+              Free account
+            </h2>
+            <p className="mt-1 text-gray-700">
+              Create apps, connect databases and add-on services, and
+              collaborate on your apps, for free.
+            </p>
+          </div>
+        </div>
+        {/* Repeat the above div structure for other features */}
+      </div>
+    </section>
   );
 }
 

@@ -42,6 +42,11 @@ const PricingSection = () => {
             <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
           </label>
           <span className="ml-3 text-gray-600">Billed Yearly</span>
+          {isYearly && (
+            <span className="ml-2 bg-red-500 text-white text-xs font-bold py-1 px-2 rounded-full">
+              20% OFF
+            </span>
+          )}
         </div>
 
         <div className="grid gap-8 md:grid-cols-3">
@@ -64,7 +69,7 @@ const PricingSection = () => {
               href="/signup"
               className="mt-auto inline-block bg-black text-white py-3 px-6 text-lg font-medium hover:bg-gray-800 transition duration-300"
             >
-              Get Started
+              Get Started - It's Free
             </Link>
           </div>
 
@@ -88,9 +93,9 @@ const PricingSection = () => {
             </ul>
             <Link
               href="/signup"
-              className="mt-auto inline-block bg-blue-600 text-white py-3 px-6 text-lg font-medium hover:bg-blue-700 transition duration-300"
+              className="mt-auto inline-block bg-black text-white py-3 px-6 text-lg font-medium hover:bg-gray-800 transition duration-300"
             >
-              Get Started
+              Start Your Free Trial
             </Link>
           </div>
 
@@ -125,7 +130,7 @@ const PricingSection = () => {
               href="/signup"
               className="mt-auto inline-block bg-black text-white py-3 px-6 text-lg font-medium hover:bg-gray-800 transition duration-300"
             >
-              Get Started
+              Start Your Free Trial
             </Link>
           </div>
         </div>

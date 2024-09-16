@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Link from "next/link";
 
 const PricingSection = () => {
   const [isYearly, setIsYearly] = useState(false);
@@ -59,12 +60,12 @@ const PricingSection = () => {
               <li className="text-gray-600">Limited AI chat usage</li>
               <li className="text-gray-600">Email support</li>
             </ul>
-            <a
-              href="#"
+            <Link
+              href="/signup"
               className="mt-auto inline-block bg-black text-white py-3 px-6 text-lg font-medium hover:bg-gray-800 transition duration-300"
             >
               Get Started
-            </a>
+            </Link>
           </div>
 
           {/* Basic Plan */}
@@ -85,12 +86,12 @@ const PricingSection = () => {
               <li className="text-gray-600">Priority support</li>
               <li className="text-gray-600">More AI chat usage</li>
             </ul>
-            <a
-              href="#"
+            <Link
+              href="/signup"
               className="mt-auto inline-block bg-blue-600 text-white py-3 px-6 text-lg font-medium hover:bg-blue-700 transition duration-300"
             >
               Get Started
-            </a>
+            </Link>
           </div>
 
           {/* Unlimited Plan */}
@@ -120,12 +121,12 @@ const PricingSection = () => {
               <li className="text-gray-600">Unlimited AI chat access</li>
               <li className="text-gray-600">24/7 premium support</li>
             </ul>
-            <a
-              href="#"
+            <Link
+              href="/signup"
               className="mt-auto inline-block bg-black text-white py-3 px-6 text-lg font-medium hover:bg-gray-800 transition duration-300"
             >
               Get Started
-            </a>
+            </Link>
           </div>
         </div>
       </div>

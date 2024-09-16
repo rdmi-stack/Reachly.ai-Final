@@ -68,7 +68,7 @@ const Modal = () => {
                     Pricing
                   </a>
                 </Link>
-                <Link href="https://app.anycopy.co/login">
+                <Link href="/login">
                   <a className="font-medium text-blue-600 py-3 md:py-6 flex items-center dark:text-blue-500 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
                     <svg
                       className="w-5 h-5 mr-2"

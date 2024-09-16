@@ -18,7 +18,7 @@ const HeroSection = () => {
             <div className="flex flex-col md:flex-row md:items-start">
               <div>
                 <a
-                  href="https://app.anycopy.co/signup"
+                  href="/signup"
                   className="inline-block bg-black text-white text-lg md:text-xl font-semibold py-4 px-8 hover:bg-gray-800 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
                 >
                   Get Started - It's Free
